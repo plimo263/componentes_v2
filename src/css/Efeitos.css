@@ -1,0 +1,57 @@
+/* CLASSES QUE TEM EFEITOS COMO ROTACOES , EXPANCOES ETC...*/
+
+.rotacionar:hover {
+    transition: .2s;
+    animation: rotacionar .5s linear;
+}
+
+.rotacionar-infinito {
+    animation: rotacionar .5s linear infinite;
+}
+
+@keyframes rotacionar {
+    0% {
+        transform: rotate(360deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+/* EFEITOS PARA MOVER ESQUERDA E DIREITA */
+.efeito-entrar-esquerda {
+    position: relative;
+    transform: translate(-100vw, 0);
+    animation: entrar-esquerda 1s .5s forwards;
+}
+
+.efeito-sair-esquerda {
+    position: relative;
+    animation: sair-esquerda 1s .5s forwards;
+}
+.efeito-saltar {
+    animation: saltar 5s infinite;
+}
+@keyframes entrar-esquerda {
+    to {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes sair-esquerda {
+    to {
+        transform: translate(-100vw, 0);
+    }
+}
+
+@keyframes saltar {
+    0% {
+        transform: translate(0,0);
+    }
+    20% {
+        transform: translate(0,-40%);
+    }
+        
+    100% {
+        transform: translate(0,0%);
+    }
+}

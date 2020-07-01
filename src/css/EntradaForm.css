@@ -1,0 +1,45 @@
+/*AJUSTANDO VISUALMENTE O CAMPO ADICIONAR QUE CONTEM O SELECT E O BOTAO ADD*/
+.EntradaForm div.adicionar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+/* ICONE DE ADICAO */
+.EntradaForm div.adicionar > i.icone-adicionar {
+    cursor: pointer;
+    margin-left: 5px;
+    padding: 2.5px;
+    border-radius: 50%;
+    background:rgba(0,0,0,.2);
+    font-weight: bold;
+    box-shadow: 0 0 4px black;
+    transition: .2s;
+}
+.EntradaForm div.adicionar > i.icone-adicionar:hover {
+    box-shadow: 0 0 6px black;
+    transform: scale(1.1,1.1)
+}
+
+/* FORM INTERNO PARA ADICAO DE ITENS*/
+.EntradaForm .form-interno-adicionar {
+    display: none;
+    background: rgba(0,0,0,.1);
+    padding: 2px 5px;
+    margin: 5px 0;
+    border-radius: 5px;
+    box-shadow: 0 0 4px black;
+}
+/* BOTAO DE CONFIRMACAO DO FORM INTERNO*/
+.EntradaForm .form-interno-adicionar .Botao {
+    margin-top: 5px;
+    padding: 3px;
+    background: firebrick;
+    color: white;
+    font-size: 90%;
+
+}
+/* Coloca o formulario na posição vertical*/
+.EntradaForm.entrada-form-vertical {
+    display: flex;
+    flex-direction: column;
+}

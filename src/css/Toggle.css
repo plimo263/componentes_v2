@@ -1,0 +1,18 @@
+.Toggle {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 3px;
+    transition: .3s;
+}
+
+.Toggle:hover {
+    background-color: rgba(0,0,0,.2);
+    padding: 3px;
+    
+    border-radius: 30px;
+}
+
+.Toggle > input {
+    display: none;
+}

@@ -1,0 +1,73 @@
+.PadraoForm .form-geral {
+    display: flex;
+    align-items: flex-end;
+}
+/* ESTILOS AOS ROTULOS DE CAMPOS*/
+.PadraoForm .form-geral label {
+    flex: 1;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 0;
+}
+.PadraoForm .form-geral label > span {
+    display: flex;
+    align-items: flex-end;
+    color: firebrick;
+}
+
+.PadraoForm .form-geral label:nth-child(1){
+    flex: 2;
+}
+
+/* ESTILOS A MENSAGEM DE ERRO */
+.PadraoForm > span {
+    margin: 10px 10px 0 10px;
+    justify-content: center;
+    display: flex;
+    align-items: flex-end;
+    color: firebrick;
+    font-weight: bold;
+    font-style: italic;
+    /*border-bottom: 1px solid firebrick;*/
+}
+
+
+/* ESTILOS AO BOTÃO DE ENVIO */
+.PadraoForm .form-geral .Botao {
+    background-color: white;
+    font-weight: 700;
+    color: firebrick;
+    width: 10%;
+    font-size: 90%;
+    border: 2px solid firebrick;
+    border-radius: 30px;
+    transition: .3s;
+    margin-right: 5px;
+    margin-bottom: 0;
+    outline: none;
+}
+/* MOUSE ACIMA ALTERA COR E FUNDO*/
+.PadraoForm .form-geral .Botao:hover {
+    background-color: firebrick;
+    color: white;;
+}
+
+/* ORGANIZACAO EM TELAS MENORES*/
+@media screen and (max-width: 767px){
+    .PadraoForm .form-geral {
+        flex-direction: column;
+    }
+    .PadraoForm .form-geral label {
+        width: 100%;
+        margin-bottom: 5px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    .PadraoForm .form-geral .Botao {
+        width: 100%;
+        margin-left: 5px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        margin-top: 10px;
+    }
+}

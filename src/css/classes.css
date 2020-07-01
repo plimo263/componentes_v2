@@ -1,0 +1,137 @@
+/*
+Arquivo de atalhos para propriedades css mais usadas
+*/
+/* CONFIGURAÇÕES DE FLEX */
+.d-flex{display: flex;}
+.d-flex-column{flex-direction: column;}
+
+.flex-jc-center{justify-content: center;}
+.flex-jc-end{justify-content: flex-end;}
+.flex-jc-between{justify-content: space-between;}
+.flex-jc-around{justify-content: space-around;}
+
+.flex-ai-center{align-items: center;}
+.flex-ai-end{align-items: flex-end}
+.flex-ai-stretch{align-items:stretch;}
+
+.c-flex-1{flex: 1;}
+.c-flex-2{flex: 2;}
+.c-flex-3{flex: 3;}
+.c-flex-4{flex: 4;}
+
+/* ESPACAMENTOS E MARGINS */
+.mar-0{margin:0}
+.mar-5{margin: 5px;}
+.mar-10{margin: 10px;}
+.mar-15{margin: 15px;}
+.mar-center{margin-left: auto; margin-right: auto;}
+
+.mar-l-0{margin-left:0}
+.mar-l-5{margin-left: 5px;}
+.mar-l-10{margin-left: 10px;}
+.mar-l-15{margin-left: 15px;}
+
+.mar-b-0{margin-bottom:0}
+.mar-b-5{margin-bottom: 5px;}
+.mar-b-10{margin-bottom: 10px;}
+.mar-b-15{margin-bottom: 15px;}
+
+.mar-r-0{margin-right:0}
+.mar-r-5{margin-right: 5px;}
+.mar-r-10{margin-right: 10px;}
+.mar-r-15{margin-right: 15px;}
+
+.mar-t-0{margin-top:0}
+.mar-t-5{margin-top: 5px;}
+.mar-t-10{margin-top: 10px;}
+.mar-t-15{margin-top: 15px;}
+
+.pad-0 {padding:0}
+.pad-5{padding: 5px;}
+.pad-10{padding: 10px;}
+.pad-15{padding: 15px;}
+
+.pad-l-0 {padding-left:0}
+.pad-l-5{padding-left: 5px;}
+.pad-l-10{padding-left: 10px;}
+.pad-l-15{padding-left: 15px;}
+
+.pad-b-0 {padding-bottom:0}
+.pad-b-5{padding-bottom: 5px;}
+.pad-b-10{padding-bottom: 10px;}
+.pad-b-15{padding-bottom: 15px;}
+
+.pad-r-0 {padding-right:0}
+.pad-r-5{padding-right: 5px;}
+.pad-r-10{padding-right: 10px;}
+.pad-r-15{padding-right: 15px;}
+
+.pad-t-0 {padding-top:0}
+.pad-t-5{padding-top: 5px;}
+.pad-t-10{padding-top: 10px;}
+.pad-t-15{padding-top: 15px;}
+
+/* BORDAS */
+.bor-rad-5{border-radius: 5px;}
+.bor-rad-10{border-radius: 10px;}
+.bor-rad-15{border-radius: 15px;}
+.bor-rad-circle{border-radius: 50%;}
+.bor-1{border: 1px solid black;}
+.bor-t-1{border-top: 1px solid black;}
+.bor-b-1{border-bottom: 1px solid black;}
+.bor-r-1{border-right: 1px solid black;}
+.bor-l-1{border-left: 1px solid black;}
+/* COLORIR BORDAR */
+.bor-cor-red{border: 1px solid firebrick; box-shadow: 0 0 4px firebrick;transition: .1s}
+.bor-cor-green{border: 1px solid forestgreen;box-shadow: 0 0 4px forestgreen;transition: .1s}
+.bor-cor-white{border: 1px solid white;box-shadow: 0 0 4px white;transition: .1s}
+.bor-cor-black{border: 1px solid black;box-shadow: 0 0 4px black;transition: .1s}
+.bor-cor-orange{border: 1px solid orangered;box-shadow: 0 0 4px orangered;transition: .1s}
+.bor-cor-yellow{border: 1px solid goldenrod;box-shadow: 0 0 4px goldenrod;transition: .1s}
+
+.bor-cor-red:hover{box-shadow: 0 0 8px firebrick; transition: .1s;}
+.bor-cor-green:hover{box-shadow: 0 0 8px forestgreen; transition: .1s;}
+.bor-cor-white:hover{box-shadow: 0 0 8px white; transition: .1s;}
+.bor-cor-black:hover{box-shadow: 0 0 8px black; transition: .1s;}
+.bor-cor-orange:hover{box-shadow: 0 0 8px orangered; transition: .1s;}
+.bor-cor-yellow:hover{box-shadow: 0 0 8px goldenrod; transition: .1s;}
+
+/* SOMBRAS */
+.box-s-1{box-shadow: 0 0 1px black; transition: box-shadow .2s;} .box-s-1:hover{box-shadow: 0 0 2px black;transition: box-shadow .2s;}
+.box-s-2{box-shadow: 0 0 2px black; transition: box-shadow .2s;} .box-s-2:hover{box-shadow: 0 0 4px black;transition: box-shadow .2s;}
+.box-s-4{box-shadow: 0 0 4px black; transition: box-shadow .2s;} .box-s-4:hover{box-shadow: 0 0 8px black;transition: box-shadow .2s;}
+.box-s-8{box-shadow: 0 0 8px black; transition: box-shadow .2s;} .box-s-8:hover{box-shadow: 0 0 16px black;transition: box-shadow .2s;}
+.box-s-16{box-shadow: 0 0 16px black; transition: box-shadow .2s;} .box-s-16:hover{box-shadow: 0 0 32px black;transition: box-shadow .2s;}
+
+/* CORES BACKGROUND */
+.bg-red{ background: firebrick;}
+.bg-green{ background: forestgreen;}
+.bg-white{ background: white;}
+.bg-black{ background: black;}
+.bg-orange{ background: orangered;}
+.bg-yellow{ background: goldenrod;}
+
+.bg-trans-1{background: rgba(0,0,0,.1);}
+.bg-trans-5{background: rgba(0,0,0,.5);}
+.bg-trans-9{background: rgba(0,0,0,.9);}
+
+.text-bold {font-weight: bold}
+.text-red{ color: firebrick;}
+.text-green{ color: forestgreen;}
+.text-white{ color: white;}
+.text-black{ color: black;}
+.text-orange{ color: orangered;}
+.text-yellow{ color: goldenrod;}
+
+/* CURSORES */
+.cur-pointer {cursor: pointer;}
+
+/* LARGURAS FIXAS */
+.w-50 {width:50%}
+.w-100{width: 100%}
+.w-25{width:25%}
+
+/* POSICOES */
+.pos-abs {position: absolute;}
+.pos-rel {position: relative;}
+.pos-fix {position: fixed;}

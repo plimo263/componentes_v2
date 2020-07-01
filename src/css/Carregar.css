@@ -1,0 +1,7 @@
+.Carregar {
+    display: flex;
+    align-items: center;
+}
+
+.Carregar i { width: 1em; }
+.Carregar span { display: flex; align-items: center; margin-right: auto; margin-left: auto; font-size: .90em;}

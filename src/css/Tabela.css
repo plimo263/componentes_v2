@@ -1,0 +1,167 @@
+.Tabela {
+    border-bottom: 1px solid rgba(0,0,0,.2);
+}
+
+/* TABELA NO GERAL*/
+.Tabela table th, .Tabela table td {
+    font-size: 80%;
+    padding: 3px;
+    vertical-align: middle;
+}
+
+/* CABE */
+.Tabela .tabela-cabe {
+    z-index: 10;
+    overflow: hidden;
+    padding-bottom: 0;
+    box-shadow: 0 1px 4px black;
+}
+.Tabela .tabela-cabe table {
+    margin-bottom: 0;
+}
+
+/* CORPO */
+.Tabela .tabela-corpo {
+    overflow-y:auto;
+    margin-bottom: 0;
+    
+}
+
+.Tabela .tabela-corpo table {
+    margin-bottom: 0;
+}
+
+.Tabela .tabela-corpo table tfoot tr th {
+    position: sticky;
+    bottom: 0;
+    z-index: 0;
+}
+
+
+/* QUANDO A TABELA ESTIVER NO MOMENTO DE FILTRAGEM DOS DADOS */
+.Tabela .tabela-corpo .pesquisando {
+    z-index: 20; 
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    font-size: 120%; 
+    background: rgba(0,0,0,.6);
+}
+.Tabela .tabela-corpo .pesquisando .rotacionar {
+    border-radius: 50%;
+    font-size: 48px;
+    animation: rotacionar 1s linear infinite;
+}
+/* RODAPE */
+.Tabela .tabela-rodape {
+    overflow: hidden;
+    padding: 0;
+    box-shadow: 0 1px 4px black;
+}
+.Tabela .tabela-rodape table {
+    margin-bottom: 0;
+}
+
+/* AREA DO PAINEL SUPERIOR */
+.Tabela .painel {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.Tabela .painel .filtro {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+.Tabela .painel .filtro label {
+    display: flex;
+    align-items: center;
+}
+
+.Tabela .painel .filtro label input {
+    border-radius: 10px;
+    transition: .5s;
+}
+
+.Tabela .painel .filtro label input:hover {
+    box-shadow: 0 0 4px rgba(0,0,0);
+}
+.Tabela .painel .filtro .info-registros {
+    font-weight: bold;
+    font-size: 1em;
+    margin-right: 10px;
+}
+/* ESTILO PARA BOTAO DE BAIXAR NA TABELA */
+.Tabela .painel > .baixar-em-excel {
+    font-weight: bold;
+    margin: 5px 0;
+    margin-left: 5px;
+    transition: .3s;
+    box-shadow:  0 0 2px black;
+}
+.Tabela .painel > .baixar-em-excel:hover {
+    transform: scale(1, 1);
+    box-shadow: 0 1px 4px black;
+}
+.modal-baixar-tabela .form-tabela-modal {
+    display: flex;
+    flex-direction: column;
+}
+.modal-baixar-tabela .form-tabela-modal .Botao {
+    position: relative;
+    left: 25%;
+    width: 50%;
+    
+}
+/* FORMATACOES @media PARA O PAINEL */
+@media screen and (max-width: 468px){
+    .Tabela .painel {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    .Tabela .painel .filtro {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+    .Tabela .painel .filtro label {
+        flex: 1;
+        width: 100%;
+    }
+}
+
+/* CONFIGURACOES GERAIS PARA TD E TH */
+.Tabela table th, .Tabela table td {
+    padding: 6px;
+    white-space: nowrap;
+}
+/* FORMATACOES PARA TESTE DE FIXACAO DE COLUNAS Á ESQUERDA*/
+.Tabela .fixaCorpo, .Tabela .fixaCabeRoda {
+    position: sticky;    
+    z-index: 50;
+}
+.Tabela .fixaCorpo {
+    background: white;
+}
+/* ESTILO PARA O BOTAO QUE EXIBE/OCULTA A TABELA DINAMICA*/
+.Tabela tr .coluna-dinamico {
+    width: 15px;
+    text-align: center;
+}
+.Tabela tr .coluna-dinamico > i {
+    font-size: 1.50rem;
+    color: firebrick;
+    padding: .5px;
+    font-weight: bold;
+    border-radius: 50%;
+    box-shadow: 0px 0 2px black;
+    transition: .3s all;
+}
+.Tabela tr .coluna-dinamico > i:hover {
+    box-shadow: 0px 0px 4px black;
+}
