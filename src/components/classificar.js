@@ -6,6 +6,14 @@ import Fade from './fade';
 import EntradaForm from './entrada-form';
 import Logo from './logo';
 
+const TEXTO_CLASSIFICACAO = [
+    'SEM CLASSIFICAÇÃO',
+    'PÉSSIMO', 'RUIM',
+    'REGULAR', 'BOM',
+    'ÓTIMO'
+];
+
+
 class Classificar extends React.Component {
 
     constructor(props){
@@ -23,7 +31,7 @@ class Classificar extends React.Component {
     }
     // Funcao para definir rating
     _onMouseOut(e){
-        this.setState({onRating: 0});
+        this.setState({onRating: this.props.ratingValue});
     }
     // Funcao para salvar classificacao
     _onClick(e){
@@ -73,7 +81,7 @@ class Classificar extends React.Component {
         // Retorna o modal com o formulario
         return (
             <Modal titulo={cabe} onFechar={()=> this.setState({rating: null})}>
-                <h4 className='d-flex flex-ai-center flex-jc-center'> DEFINIU {this._renderRating()} ESTRELAS</h4>
+                <h4 className='d-flex flex-ai-center flex-jc-center'> {this._renderRating()}</h4>
                 <EntradaForm classNameBotao='bg-red text-white text-bold' 
                     fn={this.props.onSubmit} modo='mobile' 
                     onSubmit={this._onSubmit} schema={schema} 
@@ -98,31 +106,34 @@ class Classificar extends React.Component {
         const onClick = aguardar ? ()=>{window.alert('NÃO É POSSÍVEL CLASSIFICAR NO MOMENTO')} : this._onClick.bind(this);
         
         return (
-            <span style={style}>
-                { [1,2,3,4,5].map(ele=>{
-                    // Estilo das estrelas
-                    const style = estrelas >= ele ? { color: 'gold' } : { color: 'black'};
-                    // Defina o titulo
-                    const title = (!aguardar ? 
-                        `CLASSIFICAR ${ele} ${ele === 1 ? 'ESTRELA' : 'ESTRELAS'} ?` :
-                        'CLASSIFICAÇÃO INDISPONÍVEL NO MOMENTO'
-                    );
+        <span className='d-flex d-flex-column flex-ai-center'>
+                <span style={style}>
+                    { [1,2,3,4,5].map(ele=>{
+                        // Estilo das estrelas
+                        const style = estrelas >= ele ? { color: 'gold' } : { color: 'black'};
+                        // Defina o titulo
+                        const title = (!aguardar ? 
+                            TEXTO_CLASSIFICACAO[estrelas] :
+                            'CLASSIFICAÇÃO INDISPONÍVEL NO MOMENTO'
+                        );
 
-                    return ( 
-                        <i title={title} 
-                            key={ele} data-idx={ele} 
-                            style={style}
-                            className="material-icons" 
-                            onMouseOut={mouseOut}
-                            onMouseOver={mouseOver}
-                            onClick={onClick}
-                        >
-                            { estrelas >= ele ? 'star' : 'star_border' }
-                        </i>
-                    )
-                    })
-                }
-            </span>
+                        return ( 
+                            <i title={title} 
+                                key={ele} data-idx={ele} 
+                                style={style}
+                                className="material-icons" 
+                                onMouseOut={mouseOut}
+                                onMouseOver={mouseOver}
+                                onClick={onClick}
+                            >
+                                { estrelas >= ele ? 'star' : 'star_border' }
+                            </i>
+                        )
+                        })
+                    }
+                </span>
+                <span>{TEXTO_CLASSIFICACAO[estrelas]}</span>        
+        </span>
         )
     }
 };

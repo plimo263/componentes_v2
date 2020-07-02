@@ -7,7 +7,7 @@ export default {
     component: Classificar,
     title: 'Classificar',
     parameters: {
-        componentSubtitle: 'Este componente permite gerir uma classificação por escolha de estrela e introduz um formulário que pode ser utilizado como feedback para o que esta sendo classificado.'
+        componentSubtitle: 'Este componente permite gerir uma classificação por escolha de estrela e introduz um formulário que pode ser utilizado como feedback para o que esta sendo classificado. Seu comportamento é de um flex, então ele ocupará uma linha inteira'
     }
 }
 // OBJ STORY
