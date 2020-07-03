@@ -24,6 +24,10 @@ class Classificar extends React.Component {
         }
 
     }
+
+    componentWillReceiveProps(nextProps){
+        this.setState({onRating: nextProps.ratingValue});
+    }
     
     // Funcao para colorir a estrela
     _onMouseOver(e){
