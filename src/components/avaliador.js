@@ -74,7 +74,7 @@ class Avaliador extends React.Component {
                         })
                     }
                 </span>
-                <span>{TEXTO_CLASSIFICACAO[estrelas]}</span>        
+                {this.props.noLabel ? null : <span>{TEXTO_CLASSIFICACAO[estrelas]}</span>}
         </span>
         )
     }        
@@ -101,6 +101,8 @@ Avaliador.propTypes = {
     style: PropTypes.object,
     /** Um objeto que determina o estio para a estrela */
     styleStar: PropTypes.object,
+    /** Um booleano que determina se deve ter algo escrito abaixo da classificacao ou não */
+    noLabel: PropTypes.bool,
 
 };
 

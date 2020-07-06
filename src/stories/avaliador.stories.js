@@ -34,3 +34,9 @@ export const comEstilo = ()=> <Avaliador style={{color: 'firebrick'}} styleStar=
 
 opt = Object.assign({}, objDescricao, {parameters: {docs: { storyDescription: 'Avaliador com objeto style e styleStar enviado'} } });
 comEstilo.story = opt;
+
+// Avaliador sem label
+export const semLabel = ()=> <Avaliador noLabel ratingValue={2} onSubmit={()=>{}} />;
+
+opt = Object.assign({}, objDescricao, {parameters: {docs: { storyDescription: 'Avaliador sem a string que o descreve abaixo.'} } });
+semLabel.story = opt;

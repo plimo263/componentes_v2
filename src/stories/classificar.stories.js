@@ -34,3 +34,7 @@ classificadoComErro.story = opt;
 // Classificado com botão no aguardo
 export const classificadoComAguardar = ()=> <Classificar onSubmit={()=>{}} aguardar={true} />;
 classificadoComAguardar.story = Object.assign({}, objDescricao, { parameters: {docs:{storyDescription: 'Classificador com status e aguardar'} } });
+
+// Classificado sem o rotulo de escrita
+export const classificadoSemLabel = ()=> <Classificar noLabel onSubmit={()=>{}} />;
+classificadoSemLabel.story = Object.assign({}, objDescricao, { parameters: {docs:{storyDescription: 'Classificador sem o texto abaixo das estrelas'} } });

@@ -136,7 +136,7 @@ class Classificar extends React.Component {
                         })
                     }
                 </span>
-                <span>{TEXTO_CLASSIFICACAO[estrelas]}</span>        
+                {this.props.noLabel ? null : <span>{TEXTO_CLASSIFICACAO[estrelas]}</span>}
         </span>
         )
     }
@@ -163,7 +163,9 @@ Classificar.propTypes = {
     /** Um booleano que determina um botão giratório dentro do botão enviar, isto trava os outros campos de formulario */
     aguardar: PropTypes.bool,
     /** Um número (de 1 até 5) para determinar quantas estrelas foram marcadas */
-    ratingValue: PropTypes.number,    
+    ratingValue: PropTypes.number,
+    /** Um booleano que determina se o rotulo (texto abaixo das estrelas) será exibido ou não */    
+    noLabel: PropTypes.bool,
 
 };
 
