@@ -808,6 +808,12 @@ class PadraoForm extends React.Component {
         // Tudo certo, limpa a mensagem de erro (se houver)
         if(this.state.erro) this.setState({erro: null});
 
+        // Cria um token para cancelar a subscricao
+        const CancelToken = axios.CancelToken;
+        const token = CancelToken.source();
+        
+        obj.token = token;
+
         // Executa a funcao de pré-envio passando o objeto criado        
         if(this.props.fnPre){
             this.props.fnPre(obj);
@@ -823,7 +829,7 @@ class PadraoForm extends React.Component {
         
         this.setState({erro: null, aguardar: true})
 
-        axios.post(this.props.rota, formData).then(resp=>{
+        axios.post(this.props.rota, formData, {cancelToken: token.token}).then(resp=>{
             if(resp.status !== 200){
                 this.setState({aguardar: false,
                     erro: 'ERRO INTERNO DO SERVIDOR, SE PERSISTIR INFORMAR AO ADMIN'});
@@ -831,6 +837,7 @@ class PadraoForm extends React.Component {
             }
             // Deu tudo certo, veja se tem alguma mensagem de erro
             if(resp.data.hasOwnProperty('erro')){
+                if(this.props.fnErr) this.props.fnErr(resp.data.erro);
                 this.setState({erro: resp.data.erro, aguardar: false});
                 return false;
             }
@@ -840,6 +847,10 @@ class PadraoForm extends React.Component {
             this.props.fnPos(resp.data, obj);
 
         }).catch(err=>{
+            if(axios.isCancel(err)){
+                console.log('TOKEN CANCELADO', err);
+                return false;
+            }
             this.setState({aguardar: false, erro: 'ERRO AO TENTAR ENVIAR FORMULÁRIO'});
             console.log(err);
             if(this.props.fnErr) this.props.fnErr(err);

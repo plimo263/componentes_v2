@@ -206,3 +206,20 @@ padrao_tipos.story = {
         }
     }
 }
+
+export const padrao_com_cancelamento = ()=> <PadraoForm rota='http://httpbin.org/post' 
+    fnPos={(resp, obj)=> console.log(resp.form)} tipo='padrao_tipos' 
+    fnPre={obj=> window.setTimeout(()=> obj.token.cancel(), 1000) }
+    lojas={{ selecionadas: '1,2', total: ["01", "02"] }} 
+    tipos={[ ['AR', 'AR'], ['OC', 'OC'] ]}
+    grupos={{ selecionadas: '1,2,3', total: [[1, "FMOREIRA"], [2, "FB"], [3, "AJOCE"]]}} 
+    onChange={(valor,indice)=> console.log(valor, indice)}
+/>
+
+padrao_com_cancelamento.story = {
+    parameters: {
+        docs: {
+            storyDescription: 'NA FUNÇÃO PRE USA O TOKEN PARA CANCELAMENTO.'
+        }
+    }
+}
