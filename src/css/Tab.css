@@ -1,0 +1,78 @@
+.Tab-react {
+    width: 100%;
+}
+
+.Tab-react .tab-react-cabe {
+    min-width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: space-around;
+    align-content: center;
+}
+/* DANDO DESTAQUE PARA A ABA ATIVA MODO NORMAL */
+.Tab-react .tab-react-cabe .cabe-idx-ativo {
+    cursor: pointer;
+    box-shadow: 0 1px 2px black;
+    padding: 7px;
+    border-radius: 20px;
+    transition: .2s;
+}
+.Tab-react .tab-react-cabe .cabe-idx-ativo:hover {
+    box-shadow: 0 2px 4px black;
+}
+
+.Tab-react .tab-react-cabe .cabe-idx-ativo.ativo {
+    position: relative;
+    background:firebrick;
+    color: white;
+    font-weight: bold;
+}
+/* FIM DA CONFIG ABA ATIVA MODO NORMAL */ 
+
+/* A OUTRA OPCAO PARA O ESTILO MOBILE*/
+.Tab-react .tab-react-cabe .cabe-idx-mobile {
+    cursor: pointer;
+    padding: 7px;
+    transition: .3s;
+}
+.Tab-react .tab-react-cabe .cabe-idx-mobile:hover {
+    border-bottom: 4px solid firebrick;
+}
+
+.Tab-react .tab-react-cabe .cabe-idx-mobile.mobile {
+    position: relative;
+    color: firebrick;
+    border-bottom: 4px solid firebrick;
+    font-weight: bold;
+}
+
+/* CORPO DA TABELA*/
+.Tab-react .corpo-idx {
+    padding: 5px;
+    margin-top: 10px;
+}
+/* INDICADOR DA ABA A SER SELECIONADA */
+.Tab-react .tab-indicador-cabe {
+    display: flex;
+    justify-content: space-around;
+    
+}
+.Tab-react .tab-indicador-ativo {
+    color: firebrick;
+}
+/*OCULTADOR DO INDICADOR*/
+.Tab-react .tab-indicador-oculto {
+    visibility: hidden;
+}
+.Tab-react .tab-react-cabe .cracha {
+    position: absolute;
+    right: -10px;
+    top: -8px;
+    border-radius: 10px;
+    padding: 0 6px;
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    
+}
