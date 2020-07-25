@@ -45,3 +45,27 @@ outroIcone.story = {
         }
     }
 }
+//
+export const desativado = ()=>(
+    <Fab icon="edit" disabled onClick={()=> alert('oi')} />
+)
+desativado.story = {
+    ...objDescricao,
+    "parameters": {
+         "docs": {
+             "storyDescription": 'Fab com botão  desativado'
+        }
+    }
+}
+//
+export const rotacionar = ()=>(
+    <Fab icon="sync" disabled title="AGUARDE, CARREGANDO" rotate onClick={()=> alert('oi')} />
+)
+rotacionar.story = {
+    ...objDescricao,
+    "parameters": {
+         "docs": {
+             "storyDescription": 'Fab em estado de rotação, como se estivesse aguardando algo'
+        }
+    }
+}

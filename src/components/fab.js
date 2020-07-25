@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ClassNames from 'classnames';
+import '../css/Efeitos.css';
 /**
 Um botão flutuante posicionado na parte inferior para ações
 comuns.
@@ -9,11 +11,26 @@ comuns.
 - Defina um icone passando a propriedade icon
 */
 
-function Fab({icon, title, style, onClick}){
+function Fab({disabled, rotate, icon, title, style, onClick}){
+    const styleInner = Object.assign({}, style, disabled ? {opacity: '.7'} : {});
+    const className = ClassNames("d-flex flex-ai-center flex-jc-center",
+        {
+            'rotacionar-infinito': rotate
+         }
+    )
     return (
-        <span className='d-flex flex-ai-center flex-jc-center' onClick={onClick} title={title} style={{...styles, ...style}}>
+        <button disabled={disabled} 
+
+            className={className}
+            onClick={onClick} 
+            title={title} style={{
+                ...styles, 
+                ...styleInner
+            }}
+            
+        >
             <i className="material-icons">{icon}</i>
-        </span>
+        </button>
     )
 };
 //
@@ -26,6 +43,10 @@ Fab.propTypes = {
     style: PropTypes.object,
     /** Titulo que será exibido no botão quando o mouse ficar posicionado acima */
     title: PropTypes.string,
+    /** Define se o botão deve ficar desabilitado */
+    disabled: PropTypes.bool,
+    /** Determina se o icone dentro do botão deve rotacionar, isto é usado em casos de sincronismo (icon=sync) */
+    rotate: PropTypes.bool,
 }
 //
 Fab.defaultProps = {
@@ -38,12 +59,14 @@ const styles = {
     position: 'fixed',
     bottom: '15px',
     right: '15px',
-    boxShadow: '0 12px 8px #ccc',
+    boxShadow: '0 0 8px #000',
     borderRadius: '50%',
     padding: '10px',
-    backgroundColor: 'firebrick',
+    backgroundColor: "rgba(178,34,34)",
+    opacity: '1',
     color: 'white',
     fontWeight: 'bold',
+    borderWidth: '0px',
 };
 
 export default Fab;
