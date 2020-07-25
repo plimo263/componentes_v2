@@ -67,6 +67,7 @@ const styles = {
     color: 'white',
     fontWeight: 'bold',
     borderWidth: '0px',
+    outline: 'none',
 };
 
 export default Fab;
