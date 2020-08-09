@@ -23,8 +23,16 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+    /* justify-content: space-between; */
 }
-
+/* Modal em tamanho máximo */
+.Modal.modal-full {
+    top: .5%;
+    left: 1%;
+    width: 98%;
+    height: 90%;
+    
+}
 .Modal.modal-pequeno {
     width: 40%;
     left: 30%;
@@ -37,17 +45,18 @@
 
 .Modal > .modal-cabe {
     min-height: 30px;
-    border-bottom: 1px solid #ccc;
+    /* border-bottom: 1px solid #ccc; */
 }
 .Modal .modal-corpo {
+    /* flex: 1; */
     margin: 10px 0;
     border-bottom: 1px solid #ccc;
-    height: 450px;
+    height: 500px;
     overflow-y: auto;
 }
 .Modal .modal-rodape {
     display: flex;   
-    flex-direction: row;
+    flex-direction: row-reverse;
     justify-content: space-between;
 }
 
