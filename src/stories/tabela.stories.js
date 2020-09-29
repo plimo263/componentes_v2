@@ -293,3 +293,20 @@ comContador.story = {
         }
     }
 };
+
+export const tdIdEData = ()=>{
+    let cabe = ['GRUPO', 'GRIFE', '01.01', '02.01', '03.01', '04.01'];
+    let corpo = [
+        [{'id': '1', 'data': 'GRUPO 01'}, 'ANA HICKMAN', {'id': 838, 'data': 20, 'style': {'color': 'blue', 'fontWeight': 'bold'}}, {'id': 840, 'data': 10}, {'id': 841, 'data': 15}, {'id': 843, 'data': 15}]
+    ];
+    
+    return <Tabela onClick={e=> console.log(e.target.dataset.id, '=> ', e.target.dataset.cell, '==>', e.target.dataset.row)} cabe={cabe} corpo={corpo}  />
+};
+
+tdIdEData.story = {
+    parameters: {
+        docs: {
+            storyDescription: 'Uma tabela com os campos sendo {id, data}. Para recuperar o campo é necessário buscar e.target.dataset.id'
+        }
+    }
+}

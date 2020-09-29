@@ -347,10 +347,12 @@ class Tabela extends Component {
             {
                 row.map((cell,cellidx)=>{
                     let cellId, cellCopy, styleTd = {};
+                    let objAtrCelula = {};
                     cellCopy = cell;
                     // Campos podem ser definidos como objetos {id:id, data:''}
                     if(cell && cell.hasOwnProperty('id')){
                         cellId = cell.id;
+                        objAtrCelula['data-id'] = cell.id; // Id de identificação da celula
                         cellCopy = cell.data;
                         // Veja se o td tem um style enviado e entao o defina 
                         if(cell.hasOwnProperty('style')) styleTd = cell.style;
@@ -385,7 +387,7 @@ class Tabela extends Component {
                     if(this.props.fixaColuna && this.props.fixaColuna.includes(cellidx) && keytrSelecionado && keytrSelecionado.toString() === idx.toString()) {
                         style = trSelecionado[keytrSelecionado];
                     }
-                    let objAtrCelula = {};
+                    
                     objAtrCelula['data-row'] = idx; // indice do regisotr
                     objAtrCelula['data-cell'] = cellidx; // valor da celula
                     //objAtrCelula['style'] = style || {}; // estilo
