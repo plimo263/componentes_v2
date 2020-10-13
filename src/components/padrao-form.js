@@ -297,10 +297,11 @@ class PadraoForm extends React.Component {
         let grFL, grFLSelec, grFlDefault; 
         // Convertendo os grupos e obtendo o default
         grFL = this.getGrupoFil(grupos.total, lojas.total); // ["0101", "0102"]
+
         grFLSelec = this.getGrupoFil(grupos.selecionadas.split(','), lojas.selecionadas.split(','));
+        //
         // Agora tirando os selecionados e incluindo nas lojas
         grFlDefault = this._obterDefault(grFLSelec.map(ele=> ele[0]).join(','), grFL);
-        
         return {total: this._formatar(grFL.map(ele=> ele[0]), true), selecionadas: grFlDefault};
     }
      // Retorna o objeto dos meses com o total e selecionados
@@ -1077,9 +1078,14 @@ class PadraoForm extends React.Component {
         let {grpFil} = this.props;
         let retorno = new Set(); // vai fazer a montagem dos grupos e filiais disponiveis
         grupos.forEach(gr=>{
+            // Verifica se o grupo é um array, se for então o primeiro elemento deve ser convertido
+            // em string com um zero á esquerda, senão todo o grupo deve ser convertido em string com
+            // um zero a esquerda.
+            gr = Array.isArray(gr) ? gr[0].toString().padStart(2, '0') : gr.toString().padStart(2, '0');
+
             lojas.forEach(lj=>{
                 // Junta grupo e loja e veja se existe no grpFil entao apenda no retorno
-                let grLj = gr[0].toString().padStart(2, '0')+(
+                let grLj = gr+(
                     Array.isArray(lj) ? lj[0].toString().padStart(2, '0') : lj.toString().padStart(2, '0') 
                 );
                 if(grpFil.includes(grLj)) retorno.add([grLj])
