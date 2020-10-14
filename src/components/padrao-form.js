@@ -292,8 +292,8 @@ class PadraoForm extends React.Component {
 
     // Retorna o objeto para as lojas que atendam a uma concatenacao de grupo/loja
     _initGrupoLoja(){
-        let {grupos, lojas} = this.props;
-
+        let {grupos, lojas, gruposLojas} = this.props;
+        
         let grFL, grFLSelec, grFlDefault; 
         // Convertendo os grupos e obtendo o default
         grFL = this.getGrupoFil(grupos.total, lojas.total); // ["0101", "0102"]
@@ -302,7 +302,20 @@ class PadraoForm extends React.Component {
         //
         // Agora tirando os selecionados e incluindo nas lojas
         grFlDefault = this._obterDefault(grFLSelec.map(ele=> ele[0]).join(','), grFL);
-        return {total: this._formatar(grFL.map(ele=> ele[0]), true), selecionadas: grFlDefault};
+        //return {total: this._formatar(grFL.map(ele=> ele[0]), true), selecionadas: grFlDefault};
+                
+        // Verifica se existe e se é um array, assim permite somente os enviados a serem retornados.
+        console.log(gruposLojas);
+        if(gruposLojas && Array.isArray(gruposLojas)){
+            grFL = grFL.filter(ele=> gruposLojas.includes(ele[0]));
+            
+            return {
+                total: this._formatar(grFL.map(ele=> ele[0]), true),
+                selecionadas: this._obterDefault(grFL.map(ele=> ele[0]).join(','), grFL)
+            }
+            
+        }
+        return { total: this._formatar(grFL.map(ele=> ele[0]), true), selecionadas: grFlDefault};
     }
      // Retorna o objeto dos meses com o total e selecionados
     _initMes(multiplo){
@@ -1229,7 +1242,9 @@ PadraoForm.propTypes = {
         anoAte: PropTypes.string,
         ateOMes: PropTypes.string,
         arOc: PropTypes.string,
-    })
+    }),
+    /** Um array que concentra os grupos/filiais que devem ser exibidos, somente estes grupos/filiais informados */
+    gruposLojas: PropTypes.array,
 }
 
 export default PadraoForm;
