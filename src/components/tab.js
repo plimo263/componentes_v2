@@ -40,14 +40,19 @@ class Tab extends React.Component {
     }
 
     _renderCabe(){
-        let className = ClassNames(this.props.classNameCabe, 'tab-react-cabe');
-        let ativo = this.state.ativo || this.props.ativo;
         const {modo, cracha, cabe, crachaTitulo} = this.props;
+
+        let className = ClassNames(this.props.classNameCabe, {
+            'tab-react-cabe-slide' : modo === 'slide',
+            'tab-react-cabe' : modo !== 'slide',
+        });
+        let ativo = this.state.ativo || this.props.ativo;
+        
         return (
             <div className={className}>
                 {
                     cabe.map((ele,idx)=>{
-                        // Se for a aba ativa determina o modo ativo
+                        // Se for a aba ativa determina o modo ativo 
                         const className = (idx === ativo) ? `cabe-idx-${modo} ${modo}` : `cabe-idx-${modo}`;
                         const titulo = crachaTitulo && crachaTitulo[idx] ? crachaTitulo[idx] : null
                         return (
@@ -60,6 +65,7 @@ class Tab extends React.Component {
                     })
 
                 }
+                
             </div>
         )
     }
@@ -120,7 +126,7 @@ Tab.defaultProps = {
 
 Tab.propTypes = {
     /** Define o modo de exibição da aba. */
-    modo: PropTypes.oneOf(['mobile', 'ativo']).isRequired,
+    modo: PropTypes.oneOf(['mobile', 'ativo', 'slide']).isRequired,
     /** Classe css para o cabecalho */
     classNameCabe: PropTypes.string,
     /** Classe css para o corpo */

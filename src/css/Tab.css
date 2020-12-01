@@ -31,20 +31,42 @@
 /* FIM DA CONFIG ABA ATIVA MODO NORMAL */ 
 
 /* A OUTRA OPCAO PARA O ESTILO MOBILE*/
-.Tab-react .tab-react-cabe .cabe-idx-mobile {
+.Tab-react .tab-react-cabe .cabe-idx-mobile,
+.Tab-react .tab-react-cabe-slide .cabe-idx-slide {
     cursor: pointer;
     padding: 7px;
     transition: .3s;
 }
-.Tab-react .tab-react-cabe .cabe-idx-mobile:hover {
+.Tab-react .tab-react-cabe .cabe-idx-mobile:hover,
+.Tab-react .tab-react-cabe-slide .cabe-idx-slide:hover {
     border-bottom: 4px solid firebrick;
 }
 
-.Tab-react .tab-react-cabe .cabe-idx-mobile.mobile {
+.Tab-react .tab-react-cabe .cabe-idx-mobile.mobile,
+.Tab-react .tab-react-cabe-slide .cabe-idx-slide.slide {
     position: relative;
     color: firebrick;
     border-bottom: 4px solid firebrick;
     font-weight: bold;
+}
+/* MODO NO ESTILO SLIDE */
+.Tab-react .tab-react-cabe-slide {
+    position: relative;
+    padding: 15px;
+    margin-left: 10px;
+    margin-right: 10px;
+    box-shadow: 0 1px 4px #555;
+    border-radius: 5px;
+    overflow-x: auto;
+    justify-content: flex-start;
+}
+
+.Tab-react .tab-react-cabe-slide .cabe-idx-slide {
+     /* padding: 0; */
+     margin-left: 5px;
+     margin-right: 5px;
+     font-weight: bold;
+     align-self: center;
 }
 
 /* CORPO DA TABELA*/
