@@ -3,17 +3,60 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Botao from './botao';
 import '../css/Modal.css';
+// Importar o framer-motion para auxiliar nos efeitos
+import {motion} from 'framer-motion';
+
 
 /**
  * Este componente tem como objetivo exibir um modal com algum conteúdo que 
  * o desenvolvedor informe. É obrigatório passar uma função para fechar o modal.
  */
+
+ const variantsPai = {
+     hidden: {
+         opacity: 0
+     },
+     visible: {
+         opacity: 1,
+         transition: {
+             duration: .5,
+             when: "beforeChildren",
+         }
+     },
+     exit: {
+         opacity: 0,
+         transition: {
+             delay: .5,
+             when: "afterChildren",
+         }
+     }
+ }
+
+ const variantsFilho = {
+     hidden: {
+        y: '-100vh',
+     },
+     visible: {
+         y: 0,
+         transition: {
+             type: 'spring',
+             stiffness: 80
+         }
+     },
+     exit: {
+         y: '-100vh',
+         transition: {
+             duration: .2
+         }
+     }
+ }
 class Modal extends React.Component {
 
     constructor(){
         super();
         this._fnFechar = this.fnFechar.bind(this);
-    }    
+    }
+        
     render(){
         const {
             style, styleCorpo, styleTitulo, styleRodape,
@@ -33,8 +76,16 @@ class Modal extends React.Component {
         }
 
         return (
-            <div className="Modal-geral">
-                <div style={style} className={classNameT}>
+            <motion.div
+                variants={variantsPai}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="Modal-geral">
+                <motion.div 
+                        variants={variantsFilho}
+                        
+                        style={style} className={classNameT}>
                     <div className="modal-rodape">
                         {this.props.onFechar ? <i 
                             title="FECHAR MODAL" style={{fontSize: '16px', position: 'absolute', top: 0, right: 0}}
@@ -48,11 +99,11 @@ class Modal extends React.Component {
                         {this.props.children}
                     </div>
                     <div style={styleRodape} className='modal-rodape'>
-                        {/* <div></div> */}
+                        
                         {this.props.onFechar ? <Botao className='btn-xs btn-danger' onClick={this.props.onFechar}>FECHAR</Botao> : null}
                     </div>
-                </div>
-            </div>
+                </motion.div>
+            </motion.div>
         )
     }
 
@@ -61,7 +112,7 @@ class Modal extends React.Component {
     }
     componentDidMount(){
         // Alterando o tamanho inicial de exibição do modal
-       let tamanho = document.querySelector('.Modal').clientHeight + 56;
+       const tamanho = document.querySelector('.Modal').clientHeight + 56;
        document.querySelector('.Modal-geral').style.height = tamanho+'px';
 
        // Ligar evento de fechar modal com esc
