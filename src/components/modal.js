@@ -37,8 +37,9 @@ import {motion} from 'framer-motion';
         y: '-100vh',
      },
      visible: {
-         y: 0,
+         y: '0vh',
          transition: {
+             
              type: 'spring',
              stiffness: 80
          }
@@ -83,9 +84,12 @@ class Modal extends React.Component {
                 exit="exit"
                 className="Modal-geral">
                 <motion.div 
-                        variants={variantsFilho}
-                        
-                        style={style} className={classNameT}>
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    variants={variantsFilho}
+                    style={style} className={classNameT}
+                >
                     <div className="modal-rodape">
                         {this.props.onFechar ? <i 
                             title="FECHAR MODAL" style={{fontSize: '16px', position: 'absolute', top: 0, right: 0}}

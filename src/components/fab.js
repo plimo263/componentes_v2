@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
+import {motion} from 'framer-motion';
 import '../css/Efeitos.css';
 /**
 Um botão flutuante posicionado na parte inferior para ações
@@ -9,9 +10,11 @@ comuns.
 - Você pode alterar a forma como o botão se posiciona passando um style
 - Dê um titulo passando a props title
 - Defina um icone passando a propriedade icon
+- Com props passadas como variants, exit, initial e animate pode-se controlar animações do botão
 */
 
-function Fab({disabled, rotate, icon, title, style, onClick}){
+function Fab(props){
+    const {disabled, rotate, icon, title, style, onClick} = props;
     const styleInner = Object.assign({}, style, disabled ? {opacity: '.7'} : {});
     const className = ClassNames("d-flex flex-ai-center flex-jc-center",
         {
@@ -19,8 +22,9 @@ function Fab({disabled, rotate, icon, title, style, onClick}){
          }
     )
     return (
-        <button disabled={disabled} 
-
+        <motion.button 
+            {...props}
+            disabled={disabled} 
             className={className}
             onClick={onClick} 
             title={title} style={{
@@ -30,7 +34,7 @@ function Fab({disabled, rotate, icon, title, style, onClick}){
             
         >
             <i className="material-icons">{icon}</i>
-        </button>
+        </motion.button>
     )
 };
 //
@@ -47,6 +51,12 @@ Fab.propTypes = {
     disabled: PropTypes.bool,
     /** Determina se o icone dentro do botão deve rotacionar, isto é usado em casos de sincronismo (icon=sync) */
     rotate: PropTypes.bool,
+    /** Define uma animação inicial */
+    initial: PropTypes.string,
+    /** Define uma animação final */
+    animate: PropTypes.string,
+    /** Define a saida da animação */
+    exit: PropTypes.string,
 }
 //
 Fab.defaultProps = {
