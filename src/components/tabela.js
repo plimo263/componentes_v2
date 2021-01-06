@@ -1,4 +1,4 @@
-import React,{Component} from 'react'
+import React,{PureComponent} from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import '../css/Tabela.css'
@@ -12,8 +12,13 @@ import Logo from './logo'
 import Fade from './fade'
 import Toggle from './toggle'
 import 'jquery-mask-plugin'
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
+import {AnimatePresence, motion} from 'framer-motion';
 
-class CampoEntrada extends Component {
+const animetedComponents = makeAnimated();
+
+class CampoEntrada extends PureComponent {
     render(){
         // monetario e um boleano para convertermos o valor em uma string com casas decimais
         let {monetario, fn, dataRow, dataCell, defaultValue, Tabe} = this.props;
@@ -55,7 +60,7 @@ class CampoEntrada extends Component {
 - Edição de dados na tabela assim como uma tabela contraida com registros limitados.
 - Bom desempenho para até 30.000 registros.
 */
-class Tabela extends Component {
+class Tabela extends PureComponent {
     constructor(props){
         super(props);
         this.state = {
@@ -63,18 +68,23 @@ class Tabela extends Component {
             palavraFiltro: null, // A palavra gerada no filtro
             pesquisando: false, // quando ativo retorna um carregamento para a tabela
             ordem: null, // Determina a ordem informando um objeto com a coluna  ascendencia
-            verModalBaixar: null, // Estado que exibe o modal para selecionar colunas a baixar
+            modal: null, // Estado que exibe o modal para selecionar colunas a baixar
             statusChecado: this.props.cabe.map((ele,idx)=> idx), // Determina os valores checados ou nao
             corpo: this.props.corpo,
             contadorExibicao: this.props.contador, // Um contador que vai determinar quantos saltos são necessarios a cada fatiamento da tabela
             dinamicoExibir: [], // Controla a exibição/ocultacao do registro selecionado como um array
             statusEditaveis: [], // Contem um Array com um objeto {idx:indice, row:ID,  editando:true|false} dos campos editaveis
             digitando: false, // É um estado que registra enquanto o usuario esta digitando para evitar atualizacoes desnecessárias a tabela
+            filtroColuna: this.props.filtroColuna,
+            opcoesFiltro: null, // Quando true exibe as opções para selecionar o filtro desejavel
         }
+
         this._refDivCabe = React.createRef();
         this._refDivCorpo = React.createRef();
+
         // Referencia ao campo de filtro
         this._refFiltro = React.createRef();
+        
         // Referencias a div do cabecalho e a div do corpo
         this._srcDivCabe = null;
         this._srcDivCorpo = null;
@@ -82,7 +92,7 @@ class Tabela extends Component {
     render(){
         return (
             <div style={this.props.style} className='Tabela table table-responsive'>
-                <Fade>{this.state.verModalBaixar ? this._renderModal() : null}</Fade>
+                <AnimatePresence>{this.state.modal ? this._renderModal() : null}</AnimatePresence>
                 {this._renderPainel()}
                 {this._renderTabeCabe()}
                 {this._renderTabeCorpo()}
@@ -91,8 +101,8 @@ class Tabela extends Component {
     }
     // Renderiza o modal para selecionar as colunas a baixar
     _renderModal(){
-        let {cabe} = this.props;
-        let {statusChecado} = this.state;
+        const {cabe} = this.props;
+        let {statusChecado, modal} = this.state;
         statusChecado = Array.isArray(statusChecado) ? statusChecado : [];
         let style = {
             padding: '5px',
@@ -104,31 +114,84 @@ class Tabela extends Component {
             color: 'white',
             fontWeight: 'bold'
         }
+        let corpo;
+        switch (modal.tipo) {
+            case 'baixar':
+                // Corpo do modal
+                corpo = (
+                    <form className="form-tabela-modal">
+                        { cabe.map((ele,idx)=>(
+                            <Toggle key={idx} 
+                                className={idx.toString()} 
+                                defaultChecked={statusChecado.includes(idx)} 
+                                onChange={this._ativaDesativaDownload.bind(this)}
+                            >{ele}</Toggle>
+                            ))
+                        }
+                        <Botao onClick={this._iniciarDownloadExcel.bind(this)} 
+                            className="btn btn-danger">BAIXAR</Botao>
+                    </form>
+                );
+                break;
+        
+            default:
+                const container = {
+                    hidden: { x: '-100vw' },
+                    show: {
+                        x: 0,
+                        transition: {
+                        staggerChildren: .2
+                        }
+                    }
+                }
+
+                const item = {
+                    hidden: { x: '-100vw' },
+                    show: { 
+                        x: 0, 
+                        transition: {
+                            duration: .5
+                        },
+                    },
+                     
+                }
+
+                // Se a opção de ver as colunas for exibida o corpo do modal deve ser outro
+                corpo = (
+                    <motion.ul className='list-group'
+                        variants={container}
+                        initial="hidden"
+                        animate="show"
+                        
+                    >
+                    { cabe.map((ele,idx)=>(
+                        <motion.li variants={item} whileHover={
+                            { transition: { duration: .3, },
+                                backgroundColor: "rgb(178, 34, 34)",
+                                color: "rgb(255,255,255)",
+                            }
+                        } onClick={()=> {
+                                this.setState({filtroColuna: idx });
+                                window.setTimeout(() => {
+                                    this.setState({modal: null})
+                                }, 500);
+                            }}
+                            className='cur-pointer text-bold list-group-item'
+                            key={idx}>{ele}</motion.li>
+                    )) }
+                    
+                    </motion.ul>
+                )
+                break;
+        }
+        
+
+        // FUncao para fechar o modal
+        let fn = ()=> this.setState({modal: false});
+        
         return (
-            <Modal onFechar={()=> this.setState({verModalBaixar: false})} className="modal-baixar-tabela" titulo={<div style={style}><Logo /> <span>SELECIONE PARA BAIXAR</span></div>}>
-            {/*
-                <form className="form-tabela-modal">
-                {
-                    cabe.map((ele,idx)=>{
-                        return (
-                        <div key={idx} className="checkbox">
-                            <label>
-                                <input className={idx.toString()} defaultChecked={true} onChange={this._ativaDesativaDownload.bind(this)} type="checkbox" /> {ele}
-                            </label>
-                        </div>)
-                    })
-                }
-                <Botao onClick={this._iniciarDownloadExcel.bind(this)} className="btn btn-danger">BAIXAR</Botao>
-                </form>
-            */}
-             <form className="form-tabela-modal">
-                {
-                    cabe.map((ele,idx)=>{
-                        return <Toggle key={idx} className={idx.toString()} defaultChecked={statusChecado.includes(idx)} onChange={this._ativaDesativaDownload.bind(this)}>{ele}</Toggle>
-                    })
-                }
-                <Botao onClick={this._iniciarDownloadExcel.bind(this)} className="btn btn-danger">BAIXAR</Botao>
-                </form>
+            <Modal key="modal" onFechar={fn} className="modal-baixar-tabela" titulo={<div style={style}><Logo /> <span>SELECIONE PARA BAIXAR</span></div>}>
+             {corpo}
             </Modal>
         )
     }
@@ -164,11 +227,17 @@ class Tabela extends Component {
     // Renderiza o cabecalho
     _renderCabe(ocultar){
         let {cabe, dinamico} = this.props;
-        let {dinamicoExibir, corpo} = this.state;
+        
+        let {dinamicoExibir, corpo, filtroColuna} = this.state;
+        
         let style = Object.assign({cursor: 'pointer'}, 
-        ocultar ? Object.assign({visibility: 'collapse'}, this.props.styleCabe) : this.props.styleCabe);
+        
+            ocultar ? Object.assign({visibility: 'collapse'}, this.props.styleCabe) : this.props.styleCabe);
+        
         let className = classNames('', this.props.classNameCabe);
+        
         let fn = this._exibirDinamico;
+        
         return (
         <thead style={style} className={className}>
             <tr onClick={this._ordenar.bind(this)}>
@@ -183,7 +252,8 @@ class Tabela extends Component {
                 {
                     cabe.map((ele,idx)=>{
                         let className2 = classNames(className, {
-                                'fixaCabeRoda': this.props.fixaColuna && this.props.fixaColuna.includes(idx)
+                                'fixaCabeRoda': this.props.fixaColuna && this.props.fixaColuna.includes(idx),
+                                'd-flex flex-ai-center': (typeof this.state.filtroColuna === "number") && (filtroColuna === idx),
                             })
                         let tipoEscolhido;
                         if(this.state.ordem && this.state.ordem.coluna === idx){
@@ -195,8 +265,11 @@ class Tabela extends Component {
                         } 
                         
                         return (
-                        <th className={className2} title='CLIQUE PARA ORDENAR A COLUNA' key={idx}>
+                        <th className={className2} title={`CLIQUE PARA ORDENAR ${ (typeof this.state.filtroColuna === "number") ? 'OU PESQUISAR NA ' : 'A' } COLUNA`} key={idx}>
                           {tipoEscolhido} {ele}
+                          {(typeof this.state.filtroColuna === "number" && filtroColuna === idx) && (
+                              <i className="material-icons text-red">filter_alt</i>
+                          )}
                         </th>)
                     })
                 }
@@ -597,7 +670,7 @@ class Tabela extends Component {
             // Fechar o modal
             this.setState({
                 statusChecado: this.props.cabe.map((ele,idx)=> idx),
-                verModalBaixar: null,
+                modal: null,
             });
 
         }).catch(err=>{
@@ -608,7 +681,7 @@ class Tabela extends Component {
     }
     // Metodo que retorna um painel com opcoes
     _renderPainel(){
-        let className = classNames('form-control');
+        
         let filtro = this.state.filtro || this.state.corpo;
         // Veja a propriedade children, conte quantos itens tem e os espalhe
         // sobre o painel superior
@@ -616,16 +689,9 @@ class Tabela extends Component {
         // Veja se baixar foi retornado, se sim insere um botao para download
         let {baixar} = this.props;
         if(baixar){
-            /* DESATIVADO PARA MUDAR O BOTAO DE DOWNLOAD VISUALMENTE
-            arr.push(
-                <Botao key='baixar_em_excel' title="BAIXAR EM EXCEL" 
-                onClick={()=> this.setState({verModalBaixar: true})}
-                 className="baixar-em-excel btn-xs btn-danger">BAIXAR</Botao>
-            )
-            */
             arr.splice(0, 0, 
                 <i key='baixar_em_excel' title="BAIXAR EM EXCEL" 
-                onClick={()=> this.setState({verModalBaixar: true})} 
+                onClick={()=> this.setState({modal: {'tipo': 'baixar'} })} 
                  className="material-icons icone-redondo bg-red text-white">cloud_download</i>
             )
         }
@@ -633,20 +699,49 @@ class Tabela extends Component {
         return (
            <div className="painel">
                 <div className="filtro">
-                    {this.props.ocultarFiltro ? null :
-                    [<label key='rotulo'>
-                        <input placeholder='PESQUISAR' ref={this._refFiltro}
-                        onKeyUp={this._onFiltro.bind(this)} 
-                        type="search" className={className} />
-                    </label>,
+                    {this._renderFiltro()}
                     <span key='info-filtro' className="info-registros">
                         TOTAL: {filtro.length} 
-                    </span>]
-                    }
+                    </span>
+                    
                 </div>
                 <div style={{display:'flex', flex:'1'}}>{arr}</div>
             </div>
         )
+    }
+    // Metodo que retorna o componente de pesquisa
+    _renderFiltro(){
+        const {ocultarFiltro, cabe} = this.props;
+        const {filtroColuna} = this.state;
+        const className = classNames('form-control');
+        
+        //
+        return (
+            !ocultarFiltro && (
+                    <label className='d-flex d-flex-1' key='rotulo'>
+                        { (typeof this.state.filtroColuna === "number") && (
+                            <i title="ESCOLHA UMA COLUNA PARA O FILTRO" onClick={
+                                ()=> this.setState({modal: {tipo: 'filtroColuna'}})
+                            }
+                                className="material-icons icone-redondo bg-red text-white">filter_alt</i> 
+                        )}
+                        {/* <Select className='w-100' id="colunas" 
+                            
+                            onChange={e=>{
+                                console.log(e);
+                                this.setState({colunaFiltroSelecionada: e})
+                            }} 
+                            options={colunas} 
+                            defaultValue={colunaFiltroSelecionada || colunas[filtroColuna]}
+                            
+                        /> &nbsp;&nbsp;&nbsp; */}
+                        <input placeholder={`FILTRO COLUNA ${cabe[filtroColuna]} `} ref={this._refFiltro}
+                        onKeyUp={this._onFiltro.bind(this)} 
+                        type="search" className={className} />
+                    </label>
+                )
+        )
+        
     }
     // Metodo que abre o campo para edição (ou fecha dependendo do estado)
     _onAbrirEdicao(e){
@@ -709,7 +804,8 @@ class Tabela extends Component {
     }
     // Metodo que realiza o filtro
     _onFiltro(e){
-        this.setState({ pesquisando: true });
+        e.preventDefault();
+        //this.setState({ pesquisando: true });
         
         // Lancar a pesquisa
         let copiaCorpo = Array.from(this.state.corpo);
@@ -768,27 +864,10 @@ class Tabela extends Component {
         let ascOuDes = this.state.ordem && this.state.ordem.ascendencia ? this.state.ordem.ascendencia : false;
         // Aplicar a ordenacao no campo
         copia = this._aplicarOrdenacao(copia, {coluna: index, ascendencia: !ascOuDes});
-        /*
-        copia.sort((a,b)=>{
-                a = (!Array.isArray(a)) ? a.data : a;
-                b = (!Array.isArray(b)) ? b.data : b;
-                // Veja se tem {id,data}
-                let valA = (a[index].hasOwnProperty('id')) ? a[index].data : a[index];
-                let valB = (b[index].hasOwnProperty('id')) ? b[index].data : b[index];
-                // Verifica se a[index] e b[index] sao strings e os coloca em toLowerCase
-                if(typeof valA === "string" && typeof valB === "string"){
-                   return ascOuDes ? (valA.toLowerCase() > valB.toLowerCase() ) ?
-                    1 : -1 : (valB.toLowerCase() > valA.toLowerCase()) ? 1 : -1;
-                }
-                
-                    // Sao numeros devem ser comparados como tal
-                    return ascOuDes ? (valA > valB) ? 1 : -1 : (valB > valA) ? 1 : -1;
-                
-        });
-        */
-        
+                        
         this.setState({
             filtro : copia,
+            filtroColuna: (typeof this.state.filtroColuna === "number") ?  index : null,
             contadorExibicao: this.props.contador,
             ordem : {
                 coluna: index,
@@ -838,7 +917,7 @@ class Tabela extends Component {
     componentWillUnmount(){
        document.querySelector('.tabela-corpo').removeEventListener('scroll', this._manipularScrollLeft.bind(this));
     }   
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         // Necessario comparar cabecalhos, diferentes ? atualizar estado
         let{corpo, cabe} = nextProps;
         // Depois comparar tamanho dos corpos, diferentes ? atualizar estado
@@ -1021,6 +1100,8 @@ Tabela.propTypes = {
             
         ]).isRequired
     ),
+    /** Um número que determina tanto a ativação do filtro de coluna quanto qual coluna será default */
+    filtroColuna: PropTypes.number,
     /** Um array que permite preencher os valores do rodape da forma que desejar */
     rodape: PropTypes.array,
     /** Um array de indices para informar quais colunas fixar a esquerda caso tenha barra de rolagem */
