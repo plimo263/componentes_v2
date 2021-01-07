@@ -10,13 +10,10 @@ import Botao from './botao'
 import Modal from './modal'
 import Logo from './logo'
 import Fade from './fade'
-import Toggle from './toggle'
+//import Toggle from './toggle'
 import 'jquery-mask-plugin'
-import Select from 'react-select';
-import makeAnimated from 'react-select/animated';
 import {AnimatePresence, motion} from 'framer-motion';
 
-const animetedComponents = makeAnimated();
 
 class CampoEntrada extends PureComponent {
     render(){
@@ -115,47 +112,85 @@ class Tabela extends PureComponent {
             fontWeight: 'bold'
         }
         let corpo;
+        // Variantes para efeitos 
+        const container = {
+            hidden: { x: '-100vw' },
+            show: {
+                x: 0,
+                transition: {
+                staggerChildren: .2
+                }
+            }
+        }
+
+        const item = {
+            hidden: { x: '-100vw' },
+            show: { 
+                x: 0, 
+                transition: {
+                    duration: .5
+                },
+            },
+                
+        }
+        // Estilo para o hover
+        const objHover = { 
+            backgroundColor: "rgb(178, 34, 34)",
+            color: "rgb(255,255,255)",
+            transition: { duration: .3, },   
+        };
+
         switch (modal.tipo) {
             case 'baixar':
                 // Corpo do modal
                 corpo = (
-                    <form className="form-tabela-modal">
-                        { cabe.map((ele,idx)=>(
-                            <Toggle key={idx} 
-                                className={idx.toString()} 
-                                defaultChecked={statusChecado.includes(idx)} 
-                                onChange={this._ativaDesativaDownload.bind(this)}
-                            >{ele}</Toggle>
-                            ))
-                        }
-                        <Botao onClick={this._iniciarDownloadExcel.bind(this)} 
-                            className="btn btn-danger">BAIXAR</Botao>
-                    </form>
-                );
+                    // <form className="form-tabela-modal">
+                    //     { cabe.map((ele,idx)=>(
+                    //         <Toggle key={idx} 
+                    //             className={idx.toString()} 
+                    //             defaultChecked={statusChecado.includes(idx)} 
+                    //             onChange={this._ativaDesativaDownload.bind(this)}
+                    //         >{ele}</Toggle>
+                    //         ))
+                    //     }
+                    //     <Botao onClick={this._iniciarDownloadExcel.bind(this)} 
+                    //         className="btn btn-danger">BAIXAR</Botao>
+                    // </form>
+                    <div>
+                        <motion.ul className='list-group'
+                            variants={container}
+                            initial="hidden"
+                            animate="show"
+                        >
+                            {
+                                cabe.map((ele,idx)=>{
+                                    return (
+                                        <motion.li variants={item}  whileHover={objHover} data-idx={idx}
+                                            onClick={this._ativaDesativaDownload2.bind(this)}
+                                            className={`${idx.toString()} cur-pointer text-bold list-group-item d-flex flex-ai-center`}
+                                            key={idx}
+                                    >
+                                    
+                                    <motion.i exit={{opacity: 0}} 
+                                            initial={{opacity: 0}} 
+                                            animate={{opacity: 1}} 
+                                            className='material-icons '
+                                    >
+                                        {statusChecado.includes(idx) ? 'playlist_add_check' : 'clear'}
+                                    </motion.i>
+                                    <span >&nbsp;&nbsp;{ele}</span>
+                                    </motion.li>
+                                    )
+                                })
+                            }
+                        </motion.ul>
+                        <Botao onClick={this._iniciarDownloadExcel.bind(this)} style={{marginLeft: '25%'}} className="w-50 btn text-bold text-white bg-red">BAIXAR</Botao>
+                    </div>
+                    );
                 break;
         
             default:
-                const container = {
-                    hidden: { x: '-100vw' },
-                    show: {
-                        x: 0,
-                        transition: {
-                        staggerChildren: .2
-                        }
-                    }
-                }
-
-                const item = {
-                    hidden: { x: '-100vw' },
-                    show: { 
-                        x: 0, 
-                        transition: {
-                            duration: .5
-                        },
-                    },
-                     
-                }
-
+                
                 // Se a opção de ver as colunas for exibida o corpo do modal deve ser outro
                 corpo = (
                     <motion.ul className='list-group'
@@ -165,12 +200,8 @@ class Tabela extends PureComponent {
                         
                     >
                     { cabe.map((ele,idx)=>(
-                        <motion.li variants={item} whileHover={
-                            { transition: { duration: .3, },
-                                backgroundColor: "rgb(178, 34, 34)",
-                                color: "rgb(255,255,255)",
-                            }
-                        } onClick={()=> {
+                        <motion.li variants={item} whileHover={objHover}
+                            onClick={()=> {
                                 this.setState({filtroColuna: idx });
                                 window.setTimeout(() => {
                                     this.setState({modal: null})
@@ -211,6 +242,34 @@ class Tabela extends PureComponent {
         this.setState({ statusChecado: copiaStatus })
 
     }
+
+    // Local para ativar/desativar os campos para download Versão 2
+    _ativaDesativaDownload2(e){
+        let copiaStatus = JSON.parse(JSON.stringify(this.props.statusChecado ? this.props.statusChecado : this.state.statusChecado));
+        // Pega o indice, então verifica se o campo esta de fato checado ou nao
+        const indice = parseInt(e.target.dataset.hasOwnProperty('idx') ? e.target.dataset.idx : e.target.parentNode.dataset.idx);
+        
+        console.log(indice);
+        // // Se for checado adiciona(caso nao exista, senao remove, caso exista para remover)
+        // if(checado && copiaStatus.indexOf(classe) === -1){
+        //     copiaStatus.push(classe);
+        // } else if(!checado && copiaStatus.indexOf(classe) !== -1){
+        //     copiaStatus.splice(copiaStatus.indexOf(classe),1);
+        // }        
+        // this.setState({ statusChecado: copiaStatus })
+
+        // Veja se esta checado, caso não esteja remova da copiaStatus
+        if(!copiaStatus.includes(indice)){
+            copiaStatus.push(indice);
+        } else {
+            copiaStatus.splice(copiaStatus.indexOf(indice), 1);
+        }
+
+        console.log(copiaStatus);
+
+        this.setState({statusChecado: copiaStatus});
+    }
+
     // Renderiza uma tabela para o cabecalho
     _renderTabeCabe(){
         let className = classNames('table table-bordered table-hover');
@@ -766,16 +825,42 @@ class Tabela extends PureComponent {
     // Metodo para tratar de retornar o conteudo do filtro quando se envia o corpo e a palavra 
     // a ser procurada
     _aplicarFiltro(corpo, palavra){
+        const {filtroColuna} = this.state; // Importa o filtroColuna para busca avançada
+
         let copiaCorpo = JSON.parse(JSON.stringify(corpo))
         // Veja se o corpo é um array
         if(!Array.isArray(corpo)) return false;
+        
         // Se a palavra nao tiver sido enviada colocar o valor default ''
         palavra = palavra && palavra.length > 0 ? palavra : '';
+        
+        // Esta funcao recebe o elemento e o indice, para então fazer a busca e retornar true ou false
+        const fnConverterEProcura = (elemento, indice)=>{
+            if(this.props.monetario.includes(indice)){ // monetario
+                elemento = this.converter(elemento.toFixed(2));
+            } else if(this.props.datas.includes(indice)){ // data
+                elemento = this.converterData(elemento);
+            } else if(this.props.telefones.includes(indice)){ // telefone
+                elemento = this.converterTelefone(elemento);
+            } else if(this.props.percentual.includes(indice)){ // percentual
+                elemento = this.percentual(elemento);
+            } else if(this.props.dataHora.includes(indice)){ // dataHora
+                elemento = this.converterDataHora(elemento);
+            }
+            //return elemento;
+            return elemento.toString().toLowerCase().search(palavra.toLowerCase()) !== -1 ? true : false;
+        }
         // Aqui que entra toda a eficacia em verificar  e filtrar o conteudo
-        let filtro = copiaCorpo.filter(arr=>{
-            let achou = false;
+        const filtro = copiaCorpo.filter(arr=>{
             // Verifica se é um objeto, se for pega somente o atributo .data
             arr = (!Array.isArray(arr) && typeof arr === "object") ? arr.data : arr;
+
+            // Se o filtroColuna existir, devemos fazer a busca direto no indice
+            if( typeof filtroColuna === "number"){
+                return fnConverterEProcura(arr[filtroColuna], filtroColuna);
+            }
+            let achou = false;            
+            
             arr.forEach((element,idx) => {
                 if(achou) return; // ja achamos, podemos retornar
                 if(element === null) return; // Se é nulo prossegue
@@ -783,22 +868,15 @@ class Tabela extends PureComponent {
                 let copia = element;
                 if(copia.hasOwnProperty('id')) element = element.data;
 
-                if(this.props.monetario.includes(idx)){ // monetario
-                    element = this.converter(element.toFixed(2));
-                } else if(this.props.datas.includes(idx)){ // data
-                    element = this.converterData(element);
-                } else if(this.props.telefones.includes(idx)){ // telefone
-                    element = this.converterTelefone(element);
-                } else if(this.props.percentual.includes(idx)){ // percentual
-                    element = this.percentual(element);
-                } else if(this.props.dataHora.includes(idx)){ // dataHora
-                    element = this.converterDataHora(element);
-                }
+                //element = fnConverterEProcura(element, idx);
                 // Vamos ver se encontramos
-                achou = element.toString().toLowerCase().search(palavra.toLowerCase()) !== -1 ? true : false;
+                //achou = element.toString().toLowerCase().search(palavra.toLowerCase()) !== -1 ? true : false;
+                achou = fnConverterEProcura(element, idx);
             });
             return achou;
+        
         });
+        
         // Retorna o filtro novo que foi criado
         return filtro;
     }
